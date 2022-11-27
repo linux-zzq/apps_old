@@ -1,0 +1,34 @@
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+config NETUTILS_TELNETD
+	bool "Telnet daemon"
+	default n
+	depends on NET && NET_TCP
+	select NETDEV_TELNET
+	---help---
+		Enable support for the Telnet daemon.
+
+config NETUTILS_TELNETD_USE_POSIX_SPAWNP
+	bool "Telnet daemon uses posix_spawnp"
+	default y if BUILD_KERNEL
+	default n if !BUILD_KERNEL
+	depends on NETUTILS_TELNETD
+	---help---
+		Enable to use posix_spawnp instead of tak_create
+
+config NETUTILS_TELNETD_PATH
+	string "Telnetd path"
+	default "/bin/telnetd"
+	depends on NETUTILS_TELNETD_USE_POSIX_SPAWNP
+	---help---
+		The path to the telnetd.
+
+config NETUTILS_TELNETD_SHELL_PATH
+	string "Telnetd shell path"
+	default "/bin/sh"
+	depends on NETUTILS_TELNETD_USE_POSIX_SPAWNP
+	---help---
+		The path to the shell executable.
